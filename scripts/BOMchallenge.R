@@ -24,6 +24,18 @@ Question1_answer <- filter(data_bom_separated, min_temp >=0, max_temp >=0, Rainf
   group_by(Station_number) %>% 
   summarise(num_row = n())
 
+#Question 2
+#Which month saw the lowest average daily temperature difference?
+
+month_average_temp_diff <-  filter(data_bom_separated, min_temp >=0, max_temp >=0) %>% 
+  mutate(min_temp = as.numeric (min_temp)) %>% 
+  mutate(max_temp = as.numeric (max_temp)) %>% 
+  mutate(temp_diff = max_temp - min_temp) %>% 
+  group_by(Month) %>% 
+  summarise(average = mean(temp_diff))
+  
+
+  
 
 
 
