@@ -24,6 +24,8 @@ Question1_answer <- filter(data_bom_separated, min_temp >=0, max_temp >=0, Rainf
   group_by(Station_number) %>% 
   summarise(num_row = n())
 
+  #answer is 20 stations
+
 #Question 2
 #Which month saw the lowest average daily temperature difference?
 
@@ -35,8 +37,30 @@ month_average_temp_diff <-  filter(data_bom_separated, min_temp >=0, max_temp >=
   summarise(average = mean(temp_diff))
   
 
-  
+  #the answer is JUNE = 8.72
 
+
+#Question 3  Which state saw the lowest average daily temperature difference?
+
+tidy_bom_stations <- bom_stations %>% 
+  gather(key = Station_number, value = ammount, -info) %>% 
+  spread(key = info, value = ammount) %>% 
+  mutate(Station_number = as.numeric(Station_number))
+
+
+
+combined_data <- full_join(tidy_bom_stations, month_average_temp_diff, by= c("Station_number"="Station_number"))
+
+
+
+state_lowest_tempdiff <-  filter(combined_data, min_temp >=0, max_temp >=0) %>% 
+  mutate(min_temp = as.numeric (min_temp)) %>% 
+  mutate(max_temp = as.numeric (max_temp)) %>% 
+  mutate(temp_diff = max_temp - min_temp) %>% 
+  group_by(state) %>% 
+  summarise(average = mean(temp_diff)) %>% 
+  arrange(average) %>% 
+  slice(1)
 
 
 
