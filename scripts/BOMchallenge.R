@@ -16,28 +16,30 @@ separate(bom_data, Temp_min_max, into = c('min_temp', 'max_temp'), sep = "/")
 data_bom_separated <- 
   separate(bom_data, Temp_min_max, into = c('min_temp', 'max_temp'), sep = "/")
 
-filter(data_bom_separated, min_temp >=0, max_temp >=0, Rainfall >=0) %>% 
+answer1 <- filter(data_bom_separated, min_temp != "-", max_temp != "-", Rainfall != "-") %>% 
   group_by(Station_number) %>% 
   summarise(num_row = n())
 
-Question1_answer <- filter(data_bom_separated, min_temp >=0, max_temp >=0, Rainfall >=0) %>% 
-  group_by(Station_number) %>% 
-  summarise(num_row = n())
 
-  #answer is 20 stations
+
+  #answer is 20 stations with xxxx number is days
+
 
 #Question 2
 #Which month saw the lowest average daily temperature difference?
 
-month_average_temp_diff <-  filter(data_bom_separated, min_temp >=0, max_temp >=0) %>% 
+answer2 <-  filter(data_bom_separated, min_temp != "-", max_temp != "-") %>% 
   mutate(min_temp = as.numeric (min_temp)) %>% 
   mutate(max_temp = as.numeric (max_temp)) %>% 
   mutate(temp_diff = max_temp - min_temp) %>% 
   group_by(Month) %>% 
-  summarise(average = mean(temp_diff))
+  summarise(average = mean(temp_diff)) %>% 
+  arrange(average) %>% 
+  slice(1)
+
   
 
-  #the answer is JUNE = 8.72
+  #the answer is JUNE = 8.74
 
 
 #Question 3  Which state saw the lowest average daily temperature difference?
@@ -51,7 +53,7 @@ tidy_bom_stations <- bom_stations %>%
 combined_data <- full_join(tidy_bom_stations, data_bom_separated, by= c("Station_number"="Station_number"))
 
 
-state_lowest_tempdiff <-  filter(combined_data, min_temp >=0, max_temp >=0) %>% 
+answer3 <-  filter(combined_data, min_temp != "-", max_temp != "-") %>% 
   mutate(min_temp = as.numeric (min_temp)) %>% 
   mutate(max_temp = as.numeric (max_temp)) %>% 
   mutate(temp_diff = max_temp - min_temp) %>% 
@@ -60,5 +62,5 @@ state_lowest_tempdiff <-  filter(combined_data, min_temp >=0, max_temp >=0) %>%
   arrange(average) %>% 
   slice(1)
 
-    #the answer is QLD 7.20
+    #the answer is QLD 7.36
 
