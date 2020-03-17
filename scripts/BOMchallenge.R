@@ -47,12 +47,8 @@ tidy_bom_stations <- bom_stations %>%
   spread(key = info, value = ammount) %>% 
   mutate(Station_number = as.numeric(Station_number))
 
-    #the answer is QLD 7.20
-
-
-
-combined_data <- full_join(tidy_bom_stations, month_average_temp_diff, by= c("Station_number"="Station_number"))
-
+  
+combined_data <- full_join(tidy_bom_stations, data_bom_separated, by= c("Station_number"="Station_number"))
 
 
 state_lowest_tempdiff <-  filter(combined_data, min_temp >=0, max_temp >=0) %>% 
@@ -64,5 +60,5 @@ state_lowest_tempdiff <-  filter(combined_data, min_temp >=0, max_temp >=0) %>%
   arrange(average) %>% 
   slice(1)
 
-
+    #the answer is QLD 7.20
 
