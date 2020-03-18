@@ -48,10 +48,8 @@ tidy_bom_stations <- bom_stations %>%
   gather(key = Station_number, value = ammount, -info) %>% 
   spread(key = info, value = ammount) %>% 
   mutate(Station_number = as.numeric(Station_number))
-
   
 combined_data <- full_join(tidy_bom_stations, data_bom_separated, by= c("Station_number"="Station_number"))
-
 
 answer3 <-  filter(combined_data, min_temp != "-", max_temp != "-") %>% 
   mutate(min_temp = as.numeric (min_temp)) %>% 
@@ -64,3 +62,22 @@ answer3 <-  filter(combined_data, min_temp != "-", max_temp != "-") %>%
 
     #the answer is QLD 7.36
 
+    #alternative script to challenge 3 using the whole dataset that produces NA and then
+    #removing NA with na.rm
+
+answer3 <-  combined_data %>% 
+  mutate(min_temp = as.numeric (min_temp)) %>% 
+  mutate(max_temp = as.numeric (max_temp)) %>% 
+  mutate(temp_diff = max_temp - min_temp) %>% 
+  group_by(state) %>% 
+  summarise(average = mean(temp_diff, na.rm = TRUE)) %>% 
+  arrange(average) %>% 
+  slice(1)
+
+    #the answer is QLD 7.36
+
+
+
+#Question 4 Does the westmost (lowest longitude) or eastmost (highest longitude) 
+#weather station in our dataset have a higher average solar exposure?
+  
