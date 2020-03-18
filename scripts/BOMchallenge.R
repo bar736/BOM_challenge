@@ -96,9 +96,18 @@ answer4 <-  combined_data %>%
   #answer3:  top is Station 9194  lon 116.              ave solar 19.2
   #answer3:  top is Station 40043 lon 153.              ave solar 19.5
 
+#alternative script to deal with challenge 4 using mutate instead of summarise
 
-
-
+answer4 <-  combined_data %>% 
+  mutate(Solar_exposure = as.numeric(Solar_exposure)) %>%
+  mutate(lon = as.numeric(lon)) %>%
+  group_by(Station_number) %>% 
+  mutate(average_solar_exp = mean(Solar_exposure, na.rm = TRUE)) %>% 
+  arrange(lon) %>% 
+  ungroup() %>% 
+  filter(lon==min(lon) | lon==max(lon)) %>% 
+  select(Station_number, lon, average_solar_exp) %>% 
+  distinct()
 
 
 
