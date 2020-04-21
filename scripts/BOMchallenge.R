@@ -111,4 +111,74 @@ answer4 <-  combined_data %>%
 
 
 
-  
+#DATA VISUALIZATION EASTER CHALLENGE
+#Q1: For the Perth station (ID 9225), produce three scatter plots 
+#showing the relationship between the maximum temperature and 
+#minimum temperature, rainfall and solar exposure.
+
+Q1_plot1 <- combined_data %>% 
+  mutate(min_temp = as.numeric (min_temp)) %>% 
+  mutate(max_temp = as.numeric (max_temp)) %>% 
+  mutate(Rainfall = as.numeric (Rainfall)) %>% 
+  mutate(Solar_exposure = as.numeric (Solar_exposure)) %>% 
+  filter(Station_number == "9225") %>%
+  ggplot(aes(x=max_temp, y=min_temp))+ 
+  geom_point()
+#Q1_plot1 + labs(title = "Max temp vs Min temp in Perth")
+
+Q1_plot2 <- combined_data %>% 
+  mutate(min_temp = as.numeric (min_temp)) %>% 
+  mutate(max_temp = as.numeric (max_temp)) %>% 
+  mutate(Rainfall = as.numeric (Rainfall)) %>% 
+  mutate(Solar_exposure = as.numeric (Solar_exposure)) %>% 
+  filter(Station_number == "9225") %>%
+  ggplot(aes(x=max_temp, y=Rainfall))+ 
+  geom_point()
+#Q1_plot2 + labs(title = "Max temp vs Rainfall in Perth")
+
+
+Q1_plot3 <- combined_data %>% 
+  mutate(min_temp = as.numeric (min_temp)) %>% 
+  mutate(max_temp = as.numeric (max_temp)) %>% 
+  mutate(Rainfall = as.numeric (Rainfall)) %>% 
+  mutate(Solar_exposure = as.numeric (Solar_exposure)) %>% 
+  filter(Station_number == "9225") %>%
+  ggplot(aes(x=max_temp, y=Solar_exposure))+ 
+  geom_point()
+#Q1_plot3 + labs(title = "Max temp vs Solar exposure in Perth")
+
+
+
+#Q2: Display these four measurements for the Perth station in a
+#single scatter plot by using additional aesthetic mappings.
+
+
+Q2_plot4 <- combined_data %>% 
+  mutate(min_temp = as.numeric (min_temp)) %>% 
+  mutate(max_temp = as.numeric (max_temp)) %>% 
+  mutate(Rainfall = as.numeric (Rainfall)) %>% 
+  mutate(Solar_exposure = as.numeric (Solar_exposure)) %>% 
+  filter(Station_number == "9225") %>%
+  ggplot(aes(x=max_temp, y=min_temp, colour = Solar_exposure, size = Rainfall))+ 
+  geom_point()
+#Q2_plot4 + labs(title = "Temperature, Rainfall and Solar exposure in Perth")
+
+
+#Q3: Take the four plots you have produced in Q1 and Q2 
+#and save them as a multi-panel figure.
+
+library(cowplot)
+
+Q3_plot5 <- plot_grid(Q1_plot1, Q1_plot2, Q1_plot3, Q2_plot4, rel_heights = c(1, 1),
+          rel_widths = c(1, 1), labels = "AUTO")
+
+ggsave(filename = "Results/Q3plot.png", plot = Q3_plot5,
+       width = 22, height = 18, dpi = 300, units = "cm")
+
+
+
+#Q4: Using the entire BOM dataset, calculate the average monthly rainfall 
+# for each station. Produce a lineplot to visualise this data and the state 
+# each station is in.
+
+
