@@ -182,3 +182,59 @@ ggsave(filename = "Results/Q3plot.png", plot = Q3_plot5,
 # each station is in.
 
 
+rainfall_bymonth <- combined_data %>% 
+  mutate(Rainfall = as.numeric(Rainfall)) %>%
+  group_by(Station_number,  Month, state) %>% 
+  summarise(averaged_monthly_rainfall = mean(Rainfall, na.rm = TRUE))
+
+#facets
+Q4_plot6_facets <- rainfall_bymonth %>%
+  ggplot(aes(x=Month, y=averaged_monthly_rainfall, 
+             group = Station_number))+ 
+  geom_line(size=1)+
+  facet_wrap( ~ state)
+
+Q4_plot6_facets +    
+  labs(title = "Average monthly rainfall in each station",
+       caption = 'Data source: BOM data',
+       x = "Month",
+       y = "Average rainfall (mm)",
+       colour = "State") +  
+  scale_x_continuous(breaks = (1:12), labels = (month.abb))+
+  scale_y_continuous(breaks = (0:10))+
+  theme_bw()  +  
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold"),
+    strip.background = element_blank(),
+    panel.grid.major = element_line(size = 1),
+    axis.title = element_text(size = 13, colour = "black"),
+    legend.position = "right"
+)
+                     
+
+#all together
+Q4_plot6 <- rainfall_bymonth %>%
+  ggplot(aes(x=Month, y=averaged_monthly_rainfall, 
+             colour = state, group = Station_number))+ 
+  geom_line(size=1)+
+  scale_colour_brewer(palette = "Set1")
+
+
+Q4_plot6 +    
+  labs(title = "Average monthly rainfall in each station",
+       caption = 'Data source: BOM data',
+       x = "Month",
+       y = "Average rainfall (mm)",
+       colour = "State") +  
+  scale_x_continuous(breaks = (1:12), labels = (month.abb))+
+  scale_y_continuous(breaks = (0:10))+
+  theme_bw()  +  
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold"),
+    strip.background = element_blank(),
+    panel.grid.major = element_line(size = 1),
+    axis.title = element_text(size = 13, colour = "black"),
+    legend.position = "right"
+  )
