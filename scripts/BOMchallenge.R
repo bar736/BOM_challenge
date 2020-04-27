@@ -198,8 +198,7 @@ Q4_plot6_facets +
   labs(title = "Average monthly rainfall in each station",
        caption = 'Data source: BOM data',
        x = "Month",
-       y = "Average rainfall (mm)",
-       colour = "State") +  
+       y = "Average rainfall (mm)")+
   scale_x_continuous(breaks = (1:12), labels = (month.abb))+
   scale_y_continuous(breaks = (0:10))+
   theme_bw()  +  
@@ -208,9 +207,9 @@ Q4_plot6_facets +
     plot.title = element_text(face = "bold"),
     strip.background = element_blank(),
     panel.grid.major = element_line(size = 1),
-    axis.title = element_text(size = 13, colour = "black"),
-    legend.position = "right"
+    axis.title = element_text(size = 13, colour = "black")
 )
+
                      
 
 #all together
@@ -238,3 +237,6 @@ Q4_plot6 +
     axis.title = element_text(size = 13, colour = "black"),
     legend.position = "right"
   )
+
+ggsave(filename = "Results/Q4plot.png", plot = Q4_plot6,
+       width = 22, height = 18, dpi = 300, units = "cm")
